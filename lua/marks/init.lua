@@ -175,12 +175,28 @@ local function user_mappings(config)
 	end
 end
 
+-- local function apply_mappings()
+-- 	for cmd, key in pairs(M.mappings) do
+-- 		-- vim.cmd("nnoremap <silent> "..key.." <cmd>lua require'marks'."..cmd.."()<cr>")
+-- 		vim.keymap.set("n", key, function()
+-- 			vim.cmd("lua require'marks'." .. cmd .. "()")
+-- 		end, { silent = true })
+-- 	end
+-- end
+
+local which_key = require("which-key")
+
 local function apply_mappings()
 	for cmd, key in pairs(M.mappings) do
-		-- vim.cmd("nnoremap <silent> "..key.." <cmd>lua require'marks'."..cmd.."()<cr>")
+		-- Set the keymap
 		vim.keymap.set("n", key, function()
 			vim.cmd("lua require'marks'." .. cmd .. "()")
 		end, { silent = true })
+
+		-- Register with which-key
+		which_key.register({
+			[key] = { "<cmd>lua require'marks'." .. cmd .. "()<cr>", "Description of " .. cmd },
+		})
 	end
 end
 
